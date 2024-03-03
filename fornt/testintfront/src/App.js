@@ -1,13 +1,28 @@
 import React from "react";
-import "./App.css";
-// import PaymentModal from "./new";
+
+import PaymentModal from "./new";
+import md5 from "crypto-js/md5";
 
 function App() {
   const orderId = 45896588;
-  const name = "Just For You Mom Ribbon Cake";
+  const name = "Cake";
   const amount = 4500;
+  const merchantId = "1226118";
+  const merchantSecret =
+    "Mjk3NjYwMjU4MzIzNjcxODIzMTIyNTY5ODAzMTg1MjEzNjE5NDQzNw==";
 
-  var payment = {
+  const hashedSecret = md5(merchantSecret).toString().toUpperCase();
+  const amountFormated = parseFloat(amount)
+    .toLocaleString("en-us", { minimumFractionDigits: 2 })
+    .replaceAll(",", "");
+  const currency = "LKR";
+  const hash = md5(
+    merchantId + orderId + amountFormated + currency + hashedSecret
+  )
+    .toString()
+    .toUpperCase();
+
+  const payment = {
     sandbox: true, // if the account is sandbox or real
     merchant_id: "1226118", // Replace your Merchant ID
     return_url: "http://sample.com/return",
@@ -16,7 +31,7 @@ function App() {
     order_id: orderId,
     items: name,
     amount: amount,
-    currency: "LKR",
+    currency: currency,
     first_name: "Saman",
     last_name: "Perera",
     email: "samanp@gmail.com",
@@ -29,7 +44,12 @@ function App() {
     delivery_country: "Sri Lanka", // optional field
     custom_1: "", // optional field
     custom_2: "", // optional field
+    hash: hash,
   };
+
+  function pay() {
+    window.payhere.startPayment(payment);
+  }
 
   // Called when user completed the payment. It can be a successful payment or failure
   window.payhere.onCompleted = function onCompleted(orderId) {
@@ -49,14 +69,9 @@ function App() {
     console.log("Error:" + error);
   };
 
-  function pay() {
-    window.payhere.startPayment(payment);
-  }
-
   return (
     <>
       <button onClick={pay}>Pay with Payhere</button>
-      wfwegf
     </>
   );
 }

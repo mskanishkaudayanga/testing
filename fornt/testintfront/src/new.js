@@ -52,7 +52,6 @@ const PaymentModal = ({ orderId, name, amount }) => {
   return (
     <>
       <button onClick={pay}>Pay with Payhere</button>
-      wfwegf
     </>
   );
 };
