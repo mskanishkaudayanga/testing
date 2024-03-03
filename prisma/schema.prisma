@@ -13,9 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model user{
-  id Int @id @default(autoincrement())
-  name String
-  
+  uid Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String
+  phone Int
+  address String
+  city String
 
-  
 }
+model oder {
+
+  orderid Int @id @default(autoincrement())
+  odername String
+  amount Float
+
+}
+
